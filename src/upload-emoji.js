@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import axios from 'axios';
-import { ConcurrencyManager } from 'axios-concurrency';
 import uuid from 'uuid';
 
 import getSlackApiData from './get-slack-api-data';
@@ -11,13 +10,11 @@ const slackApi = axios.create({
   baseURL: `${window.location.origin}/api`
 });
 
-ConcurrencyManager(slackApi, MAX_CONCURRENT_REQUESTS);
-
 const NO_OP = function () {};
 
 export default function uploadEmoji (file, callback = NO_OP) {
   const { apiToken, versionUid } = getSlackApiData();
-  const timestamp = Date.now() / 1000;  
+  const timestamp = Date.now() / 1000;
   const version = versionUid ? versionUid.substring(0, 8) : 'noversion';
   const id = uuid.v4();
   const name = file.name.split('.')[0];
